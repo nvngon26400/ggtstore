@@ -1,0 +1,73 @@
+<div class="card">
+    <div class="card-header text-white bg-dark">DANH SÁCH SẢN PHẨM</div>
+    <div class="card-body">
+        <div class="container">
+            <input class="form-control mb-4" ng-model="search" style="outline: none; padding: 10x 20px; border: 1px solid black; border-radius: 20px" type="text" placeholder="Tìm kiếm ..." />
+        </div>
+        <table class="ui orange table">
+            <thead class="">
+                <tr>
+                    <th>Mã sản phẩm</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Nhà sản xuất</th>
+                    <th>Giá gốc</th>
+                    <th>Giảm giá</th>
+                    <th>Giá bán</th>
+                    <th>Ngày tạo</th>
+                    <th>Bảo hành</th>
+                    <th>Danh mục</th>
+                    <th>Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items | filter: search | limitTo:pager.size:pager.page">
+                    <td>#{{item.id}}</td>
+                    <td><img ng-src="{{'/assets/images/' + item.image}}" class="" style="width: 80px;" alt=""></td>
+                    <td>{{item.name | uppercase}}</td>
+                    <td>{{item.producer.name}}</td>
+                    <td>{{item.price | number}}</td>
+                    <td>{{item.discount.percents}} %</td>
+                    <th>{{item.price - ((item.price*item.discount.percents)/100)| number}}</th>
+                    <td>{{item.createDate | date: 'dd-MM-yyyy'}}</td>
+                    <td>
+                        <span ng-if="item.insurance==true" class="badge bg-success">3 tháng</span>
+                        <span ng-if="item.insurance==false" class="badge bg-primary">5 tháng</span>
+                    </td>
+                    <td>{{item.category.name}}</td>
+                    <td>
+                        <span ng-if="item.available==true" class="badge bg-warning">Đang bán</span>
+                        <span ng-if="item.available==false" class="badge bg-danger">Hết bán</span>
+                    </td>
+                    <td>
+                        <div class="">
+                            <button ng-click="edit(item)" class="btn btn-outline-primary rounded-circle">
+								<i class="fas fa-pen-square"></i>
+							</button>
+                            <button ng-click="delete(item)" class="btn btn-outline-danger rounded-circle">
+								<i class="fas fa-dumpster"></i>
+							</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-center">
+        <button ng-click="pager.first()" class="btn btn-danger">
+			<i class="fas fa-step-backward"></i>
+		</button>
+        <button ng-click="pager.prev()" class="btn btn-primary">
+			<i class="fas fa-backward"></i>
+		</button>
+        <button class="btn btn-default">{{pager.page + 1}} /
+			{{pager.count}}</button>
+        <button ng-click="pager.next()" class="btn btn-success">
+			<i class="fas fa-forward"></i>
+		</button>
+        <button ng-click="pager.last()" class="btn btn-warning">
+			<i class="fas fa-step-forward"></i>
+		</button>
+    </div>
+</div>
